@@ -1,0 +1,11 @@
+# docker-compose.yml
+# Usage:
+#   docker-compose up -d --build
+version: '3'
+services:
+  # HOOKS
+  hooks:
+    image: xrpllabsofficial/xrpld-hooks-testnet
+    ports:
+      - "6005:6005"
+      - "5005:5005"

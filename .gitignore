@@ -1,0 +1,18 @@
+__pycache__
+.idea/*
+*.pyc
+tmp
+
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+
+# PyTest #
+######################
+.pytest_cache
+.github
+build/
+
+tests/keystores/*
+tests/treasury/*
