@@ -8,9 +8,9 @@ Docker Compose the xrpl testnet (Can also just change the code to connect to the
 
 Hooks Resources
 
-* Repo: https://github.com/XRPL-Labs/xrpld-hooks
+* Github: https://github.com/XRPL-Labs/xrpld-hooks
+* Documentation: https://xrpl-hooks.readme.io/docs
 * Testnet: https://hooks-testnet.xrpl-labs.com
-* Documentation: https://hooks-testnet.xrpl-labs.com
 
 ## Install WASMCC
 
@@ -56,3 +56,20 @@ The script will run the following commands.
 5. Set Hook (Default `hook_debug`)
 6. Test Hook (Default `hook_debug`)
 
+
+## Playground (C++)
+
+You may end up needing to build your own macros so I designed the playground to be a place to test c++ functions
+
+### Build Playground
+
+`gcc ./playground/playground.c -o ./playground/build/playground`
+
+### Run Playground
+
+`./playground/build/playground out`
+
+```
+gcc ./playgrounds/c/playground.c -o ./playgrounds/c/build/playground \
+&& ./playgrounds/c/build/playground out
+```

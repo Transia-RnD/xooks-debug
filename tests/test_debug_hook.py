@@ -46,6 +46,7 @@ class TestHookDebug(BaseTestConfig):
     dir: str = os.path.join(BASE_DIR, 'keystores/')
     number: int = 3
     wallets: List[Wallet] = []
+
     hooks: List[str ]= ['hook_debug.wasm']
     
     def test_hook_debug(cls):
@@ -83,7 +84,6 @@ class TestHookDebug(BaseTestConfig):
                 w3=cls.w3,
                 wallet=cls.wallets[0].wallet,
             )
-        print(ee)
 
     def verify_funded(cls):
         try:
