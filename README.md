@@ -41,7 +41,9 @@ This repo is set up for a single hook use case, if you have a multi hook use cas
 
 ### Step 0
 
-Make changes in `src/lib.c`
+Make changes in `src/lib.c`. You can also make changes or add contracts to the tester.
+
+> In the test file you chose `contracts=True` and it will build anything in the `v2` contracts folder.
 
 ### Step 1
 
@@ -57,6 +59,7 @@ The script will run the following commands.
 6. Test Hook (Default `hook_debug`)
 
 
+
 ## Playground (C++)
 
 You may end up needing to build your own macros so I designed the playground to be a place to test c++ functions
@@ -68,6 +71,9 @@ You may end up needing to build your own macros so I designed the playground to 
 ### Run Playground
 
 `./playground/build/playground out`
+
+
+From Root
 
 ```
 gcc ./playgrounds/c/playground.c -o ./playgrounds/c/build/playground \

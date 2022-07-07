@@ -1,5 +1,5 @@
 /**
- * This hook just accepts any transaction coming through it
+ * This hook gets the ENCODED from uri and uri_len parameters
  */
  
 #include "hookapi.h"
@@ -40,16 +40,22 @@
     ENCODE_VL_COMMON(buf_out, vl, vl_len)\
 
 // URI
-// #define ENCODE_URI_SIZE ?
+// URI_SIZE is included in the macro.
 #define ENCODE_URI(buf_out, vl, vl_len) \
-    if (vl_len <= 192) {\
+    if (vl_len <= 193) {\
         ENCODE_VL_COMMON(buf_out, vl, vl_len);\
     }\
     else if (vl_len <= 12480) {\
         vl_len -= 193;\
         int byte1 = (vl_len >> 8) + 193;\
         int byte2 = vl_len & 0xFFU;\
-        ENCODE_VL_UNCOMMON(buf_out, vl, byte1, byte2, vl_len);\
+        ENCODE_VL_UNCOMMON(buf_out, vl, vl_len, byte1, byte2);\
+    else if (vl_len <= 918744) {\
+        vl_len -= 12481;\
+        int byte1 = 241 + (vl_len >> 16);\
+        int byte2 = (vl_len >> 8) & 0xFFU;\
+        int byte3 = vl_len & 0xFFU;\
+        ENCODE_VL_UNUNCOMMON(buf_out, vl, vl_len, byte1, byte2, byte3);\
     }
 #define _07_05_ENCODE_URI(buf_out, vl, vl_len)\
     ENCODE_URI(buf_out, vl, vl_len);
@@ -73,17 +79,26 @@ int64_t hook(uint32_t reserved ) {
     // IDE: Parameters
     // name: uri
     // value: 697066733A2F2F516D614374444B5A4656767666756676626479346573745A626851483744586831364354707631686F776D424779
+    // name: uri_len
+    // value: 53
+
+    uint8_t uri_len_name[] = { 0x75U, 0x72U, 0x69U, 0x5FU, 0x6CU, 0x65U, 0x6EU };
+    uint8_t uri_len_value[32];
+    int64_t uri_len_value_len = hook_param(uri_len_value, 32, uri_len_name, 7);
+
+    TRACEHEX(uri_len_value); // <- value
 
     uint8_t pname[] = { 0x75U, 0x72U, 0x69U };
-    uint8_t uri_value[53];
-    int64_t value_len = hook_param(uri_value, 53, pname, 3);
+    uint8_t uri_value[*uri_len_value];
+    int64_t value_len = hook_param(uri_value, uri_len_value, pname, 3);
 
     TRACEHEX(uri_value); // <- value
 
-    uint64_t vl_len = 53;
+    uint64_t vl_len = value_len;
     unsigned char tx_out[vl_len+2];
 
-    // uint8_t uri_value[53] = { 0X69U, 0X70U, 0X66U, 0X73U, 0X3AU, 0X2FU, 0X2FU, 0X51U, 0X6DU, 0X61U, 0X43U, 0X74U, 0X44U, 0X4BU, 0X5AU, 0X46U, 0X56U, 0X76U, 0X76U, 0X66U, 0X75U, 0X66U, 0X76U, 0X62U, 0X64U, 0X79U, 0X34U, 0X65U, 0X73U, 0X74U, 0X5AU, 0X62U, 0X68U, 0X51U, 0X48U, 0X37U, 0X44U, 0X58U, 0X68U, 0X31U, 0X36U, 0X43U, 0X54U, 0X70U, 0X76U, 0X31U, 0X68U, 0X6FU, 0X77U, 0X6DU, 0X42U, 0X47U, 0X79 };
+    // uint8_t uri_value[53] = { 0x31U, 0x32U, 0x33U, 0x34U, };
+    // uint8_t uri_value[53] = { 0x69U, 0x70U, 0x66U, 0x73U, 0x3AU, 0x2FU, 0x2FU, 0x51U, 0x6DU, 0x61U, 0x43U, 0x74U, 0x44U, 0x4BU, 0x5AU, 0x46U, 0x56U, 0x76U, 0x76U, 0x66U, 0x75U, 0x66U, 0x76U, 0x62U, 0x64U, 0x79U, 0x34U, 0x65U, 0x73U, 0x74U, 0x5AU, 0x62U, 0x68U, 0x51U, 0x48U, 0x37U, 0x44U, 0x58U, 0x68U, 0x31U, 0x36U, 0x43U, 0x54U, 0x70U, 0x76U, 0x31U, 0x68U, 0x6FU, 0x77U, 0x6DU, 0x42U, 0x47U, 0x79 };
     
     PREPARE_URI_TEST(tx_out, uri_value, vl_len);
     

@@ -35,26 +35,25 @@
     ENCODE_VL_COMMON(buf_out, vl, vl_len)\
 
 // URI
-// #define ENCODE_URI_SIZE ?
-#define ENCODE_URI(buf_out, hex) \
-    int vl_len = sizeof(hex);\
-    if (vl_len <= 192) {\
-        printf("LESS THAN 192\n");\
-        ENCODE_VL_COMMON(buf_out, hex, vl_len);\
+// URI_SIZE is included in the macro.
+#define ENCODE_URI(buf_out, vl, vl_len) \
+    if (vl_len <= 193) {\
+        ENCODE_VL_COMMON(buf_out, vl, vl_len);\
     }\
     else if (vl_len <= 12480) {\
         vl_len -= 193;\
-        printf("GREATER THAN 193\n");\
         int byte1 = (vl_len >> 8) + 193;\
-        printf("BYTE 1\n");\
-        printf("%d\n", byte1);\
         int byte2 = vl_len & 0xFFU;\
-        printf("BYTE 2\n");\
-        printf("%d\n", byte2);\
-        ENCODE_VL_UNCOMMON(buf_out, hex, byte1, byte2, vl_len);\
+        ENCODE_VL_UNCOMMON(buf_out, vl, vl_len, byte1, byte2);\
+    else if (vl_len <= 918744) {\
+        vl_len -= 12481;\
+        int byte1 = 241 + (vl_len >> 16);\
+        int byte2 = (vl_len >> 8) & 0xFFU;\
+        int byte3 = vl_len & 0xFFU;\
+        ENCODE_VL_UNUNCOMMON(buf_out, vl, vl_len, byte1, byte2, byte3);\
     }
-#define _07_05_ENCODE_URI(buf_out, hex)\
-    ENCODE_URI(buf_out, hex);
+#define _07_05_ENCODE_URI(buf_out, vl, vl_len)\
+    ENCODE_URI(buf_out, vl, vl_len);
 
 // #define PREPARE_URI_TEST_SIZE ?
 #define PREPARE_URI_TEST(buf_out_master, uri)  \

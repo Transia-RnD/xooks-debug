@@ -66,6 +66,15 @@ class TestHookDebug(BaseTestConfig):
             print('6')
         client.close()
 
+    def build_scripts(cls):
+        try:
+            dir: str = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '../scripts', 'build'))
+            p = subprocess.Popen(["make"], stdout=subprocess.PIPE, cwd=dir)
+            p.kill()
+        except Exception as e:
+            print(e)
+            raise e
+
     def build_hooks(cls):
         try:
             dir: str = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'build'))
