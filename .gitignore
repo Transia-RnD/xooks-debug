@@ -14,5 +14,5 @@ tmp
 .github
 build/
 
-tests/keystores/*
-tests/treasury/*
+# tests/keystores/*
+# tests/treasury/*
