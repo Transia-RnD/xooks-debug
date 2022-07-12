@@ -12,7 +12,7 @@ def hex_to_byte_array_for_c(hexstr: str):
 # ----------------------------------------------------------------------------------------->
 # BUILD URI
 
-hexstr: str = str_to_hex('ipfs://QmaCtDKZFVvvfufvbdy4estZbhQH7DXh16CTpv1howmBGy')
+hexstr: str = str_to_hex('ipfs://bafkreif2whi7g3wexrrqylr75pdwfimrpy45i4mhkbu3bvvlw3rm66ge7e?filename=nic-nft-1.jpg')
 hex_to_byte_array_for_c(hexstr)
 
 # 697066733a2f2f516d614374444b5a4656767666756676626479346573745a626851483744586831364354707631686f776d424779
