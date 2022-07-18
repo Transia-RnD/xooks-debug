@@ -81,7 +81,7 @@
     _02_04_ENCODE_SEQUENCE(buf_out, 0);                                                     /* uint32  | size   5 */\
     _02_26_ENCODE_FLS(buf_out, cls + 1);                                                    /* uint32  | size   6 */\
     _02_27_ENCODE_LLS(buf_out, cls + 5);                                                    /* uint32  | size   6 */\
-    _05_10_ENCODE_TOKEN_ID(buf_out, nftokenid);                                             /* amount  | size  33 */\
+    _05_10_ENCODE_TOKEN_ID(buf_out, nftokenid);                                             /* hash256 | size  33 */\
     _06_01_ENCODE_DROPS_AMOUNT(buf_out, drops_amount_raw);                                  /* amount  | size   9 */\
     uint8_t* fee_ptr = buf_out;\
     _06_08_ENCODE_DROPS_FEE(buf_out, 0);                                                    /* amount  | size   9 */\
